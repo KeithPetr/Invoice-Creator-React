@@ -1,0 +1,53 @@
+- determine the number of components needed to structure the application
+    - header component
+    - list component
+    - payment modal component
+    - past order component
+
+- create a mobile design that start at 320px and goes up to 480px
+    - create desktop version for 481px to 599px
+    - create destop version for 600px and up
+
+- header component
+    - create an h1 and an h2 to highlight the title and the name of the company
+
+    - add a toggle dark mode button to the header component
+        - create class names that will be added and removed from the elements
+        - add an onClick attribute with a function that will toggle through the class names
+
+- list component
+    - connect list items to Firebase realtime database so they remain after a page refresh
+
+    - add tasks on 'Enter' key press and on plus sign click
+        - add task function: when the user enters a task, there
+        needs to be the task name, a remove button, and the task price
+        showing in the list. Add the tasks to an array once an item is
+        entered
+
+    - add the list items that are typed in the 'Enter task' input bar
+        - use filter method to check if the current typed task has already been added to avoid duplicates
+        - remove whitespace with trim method
+
+    - add a number input that will allow the user to any price they choose
+        - allow the user to add prices with up to 2 decimal points
+        - include $US formatting
+
+    - list items need to have option to be deleted individually
+        - add 'remove' button that use filter method to go through list items in an array
+
+    - create an array that holds the prices of all of the items that are listed
+        - use the reduce method to calculate a total amount
+        - make sure the total is updated whether an item is added or removed
+
+- payment modal component
+    - after clicking on 'send invoice', create a modal that asks for name, credit card number, phone number, and cvv
+        - on button click, send the list items to another array for 'past orders'
+        - add a 'save payment information' button that on click will store the name, cc, cvv, and phone number
+        - connect the saved information to Firebase
+
+- past order component
+    - create a component that shows past orders
+        - add a 'reorder' button to bring up the payment information modal again
+        - if the 'reorder' button is clicked, populate the modal with the past payment information
+        - connect the past reorders to Firebase
+        - create an h1 header, unordered list and a button
