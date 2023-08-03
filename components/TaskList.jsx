@@ -50,7 +50,11 @@ export default function TaskList({ tasksDB }) {
     return () => unsubscribe();
   }, [tasksDB]);
 
-  const taskListElements = taskList.map(item => (
+  const taskListNames = taskList.map(item => (
+    <p key={item.task}>{item.task}</p>
+  ))
+
+  const taskListAmounts = taskList.map(item => (
     <p key={item.task}>{item.amount}</p>
   ))
 
@@ -68,10 +72,11 @@ export default function TaskList({ tasksDB }) {
       <div className="list-headings">
         <div className="item-names">
           <p>Task</p>
-          {taskListElements}
+          {taskListNames}
         </div>
         <div className="item-prices">
           <p>Task Price</p>
+          {taskListAmounts}
           <div></div>
         </div>
       </div>
