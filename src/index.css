@@ -108,3 +108,8 @@ header {
   justify-content: space-between;
   font-size: .8rem;
 }
+
+.item-names, .item-prices {
+  display: flex;
+  flex-direction: column;
+}
