@@ -27,6 +27,7 @@
     - add the list items that are typed in the 'Enter task' input bar
         - use filter method to check if the current typed task has already been added to avoid duplicates
         - remove whitespace with trim method
+        - create if statement to avoid empty strings being added
 
     - add a number input that will allow the user to any price they choose
         - allow the user to add prices with up to 2 decimal points

@@ -1,7 +1,9 @@
-import { useState, useRef } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useRef, useEffect } from "react";
+import { push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import PlusSign from "../images/plus-sign.svg";
 
-export default function TaskList() {
+export default function TaskList({tasksDB}) {
   const [taskList, setTaskList] = useState([]);
   const taskInputRef = useRef(null);
   const dollarAmountRef = useRef(null);
@@ -17,7 +19,16 @@ export default function TaskList() {
     setTaskList(prevList => {
         return [...prevList, taskObject]
     })
+    taskInputRef.current.value = ''
+    dollarAmountRef.current.value = ''
   }
+
+  // Use useEffect to push data to Firebase when taskList changes
+  useEffect(() => {
+    if (taskList.length > 0) {
+      push(tasksDB, taskList);
+    }
+  }, [taskList, tasksDB]);
 
   console.log(taskList)
 
