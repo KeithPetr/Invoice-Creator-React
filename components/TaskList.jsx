@@ -15,9 +15,15 @@ export default function TaskList({ tasksDB }) {
   // name and the amount. It then adds the object to the taskList
   // array and spreads in previous objects
   function addTask() {
-    const inputValue = taskInputRef.current.value;
+    const taskName = taskInputRef.current.value;
+    const amountValue = dollarAmountRef.current.value;
 
-    push(tasksDB, inputValue);
+    const taskObject = {
+        task: taskName,
+        amount: amountValue
+    }
+
+    push(tasksDB, taskObject);
 
     taskInputRef.current.value = "";
     dollarAmountRef.current.value = "";
@@ -26,13 +32,29 @@ export default function TaskList({ tasksDB }) {
   useEffect(() => {
     // Set up the listener when the component mounts
     const unsubscribe = onValue(tasksDB, (snapshot) => {
-      const itemsArray = Object.values(snapshot.val());
-      setTaskList(itemsArray);
+      const itemsObject = snapshot.val();
+
+      if (itemsObject) {
+        const itemsArray = Object.keys(itemsObject).map(key => {
+            return {
+                id: key,
+                task: itemsObject[key].task,
+                amount: itemsObject[key].amount
+            }
+        })
+        setTaskList(itemsArray)
+      }
     });
 
     // Clean up the listener when the component unmounts
     return () => unsubscribe();
   }, [tasksDB]);
+
+  const taskListElements = taskList.map(item => (
+    <p key={item.task}>{item.amount}</p>
+  ))
+
+  console.log("taskList", taskList)
 
   return (
     <section className="task-list">
@@ -46,9 +68,7 @@ export default function TaskList({ tasksDB }) {
       <div className="list-headings">
         <div className="item-names">
           <p>Task</p>
-          {taskList.map((item) => (
-            <p key={item}>{item}</p>
-          ))}
+          {taskListElements}
         </div>
         <div className="item-prices">
           <p>Task Price</p>
