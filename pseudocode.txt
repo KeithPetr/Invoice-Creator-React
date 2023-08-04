@@ -39,6 +39,7 @@
     - create an array that holds the prices of all of the items that are listed
         - use the reduce method to calculate a total amount
         - make sure the total is updated whether an item is added or removed
+        - create a state with an array to hold all the prices
 
 - payment modal component
     - after clicking on 'send invoice', create a modal that asks for name, credit card number, phone number, and cvv

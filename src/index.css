@@ -74,8 +74,8 @@ header {
 
 .task-list {
   background-color: #1f2937;
-  color: #FFFFFF;
-  padding: .5em 1em;
+  color: #ffffff;
+  padding: 0.5em 1em;
 }
 
 .input-section {
@@ -92,24 +92,77 @@ header {
   width: 25%;
 }
 
-.task-input, .dollar-amount {
+.task-input,
+.dollar-amount {
   padding: 0.5em;
+  margin: 0 2px 0 0;
+  border: none;
 }
 
 .plus-sign {
-  width: 10%;
-  background-color: #3770ed;
-  padding: 0.5em;
+  height: 30px;
+  padding: 1em;
   border: none;
+  background: url(images/plus-sign.svg) center no-repeat;
+  background-size: 60%;
+  max-width: 30px;
+  cursor: pointer;
 }
 
 .list-headings {
   display: flex;
   justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.item-names,
+.item-prices {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.item-names > h2, .item-prices > h2 {
+ font-size: 0.8rem;
+ font-weight: normal;
+}
+
+.item-prices > p {
+  align-self: flex-end;
+}
+
+.remove {
+  font-size: .5rem;
+  letter-spacing: 0.1rem;
+  margin-left: .75em;
+}
+
+.task-list-names, .task-list-amounts {
+  display: flex;
+  align-items: center;
+}
+
+/* ------------------------- TOTAL SECTION ---------------------- */
+
+.total-headings {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #c3c6db;
   font-size: .8rem;
 }
 
-.item-names, .item-prices {
+.total-details {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.total-details > p {
+  font-size: .6rem;
+  margin: 0;
+}
+
+.total-details > div {
+  font-weight: 700;
 }

@@ -4,12 +4,12 @@ import {
   onValue,
   push,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import PlusSign from "../images/plus-sign.svg";
 
 export default function TaskList({ tasksDB }) {
   const [taskList, setTaskList] = useState([]);
   const taskInputRef = useRef(null);
   const dollarAmountRef = useRef(null);
+  const [total, setTotal] = useState([]);
 
   // this function creates a task object that contains the task
   // name and the amount. It then adds the object to the taskList
@@ -19,9 +19,9 @@ export default function TaskList({ tasksDB }) {
     const amountValue = dollarAmountRef.current.value;
 
     const taskObject = {
-        task: taskName,
-        amount: amountValue
-    }
+      task: taskName,
+      amount: amountValue,
+    };
 
     push(tasksDB, taskObject);
 
@@ -35,14 +35,14 @@ export default function TaskList({ tasksDB }) {
       const itemsObject = snapshot.val();
 
       if (itemsObject) {
-        const itemsArray = Object.keys(itemsObject).map(key => {
-            return {
-                id: key,
-                task: itemsObject[key].task,
-                amount: itemsObject[key].amount
-            }
-        })
-        setTaskList(itemsArray)
+        const itemsArray = Object.keys(itemsObject).map((key) => {
+          return {
+            id: key,
+            task: itemsObject[key].task,
+            amount: itemsObject[key].amount,
+          };
+        });
+        setTaskList(itemsArray);
       }
     });
 
@@ -50,34 +50,55 @@ export default function TaskList({ tasksDB }) {
     return () => unsubscribe();
   }, [tasksDB]);
 
-  const taskListNames = taskList.map(item => (
-    <p key={item.task}>{item.task}</p>
-  ))
+  const taskListNames = taskList.map((item) => (
+    <div key={item.task} className="task-list-names">
+      <p>{item.task}</p>
+      <p className="remove">Remove</p>
+    </div>
+  ));
 
-  const taskListAmounts = taskList.map(item => (
-    <p key={item.task}>{item.amount}</p>
-  ))
+  const taskListAmounts = taskList.map((item) => {
+    return <p key={item.task}>{item.amount}</p>;
+  });
 
-  console.log("taskList", taskList)
+  useEffect(() => {
+    // Calculate the total amount
+    const newTotal = taskList.reduce(
+      (acc, item) => acc + parseFloat(item.amount),
+      0
+    );
+    setTotal(newTotal);
+  }, [taskList]); // Run this effect whenever taskList changes
+
+  console.log("taskList", taskList);
+  console.log("total:", total);
 
   return (
     <section className="task-list">
       <div className="input-section">
         <input className="task-input" type="text" ref={taskInputRef} />
         <input className="dollar-amount" type="number" ref={dollarAmountRef} />
-        <button className="plus-sign" onClick={addTask}>
-          <img src={PlusSign} alt="plus sign" />
-        </button>
+        <button className="plus-sign" onClick={addTask}></button>
       </div>
       <div className="list-headings">
         <div className="item-names">
-          <p>Task</p>
+          <h2>Task</h2>
           {taskListNames}
         </div>
         <div className="item-prices">
-          <p>Task Price</p>
+          <h2>Task Price</h2>
           {taskListAmounts}
           <div></div>
+        </div>
+      </div>
+      <div className="total">
+        <div className="total-headings">
+          <p>Notes</p>
+          <p>Total Amount</p>
+        </div>
+        <div className="total-details">
+            <p>We accept cash, credit, or PayPal</p>
+            <div>{total}</div>
         </div>
       </div>
     </section>
