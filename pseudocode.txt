@@ -47,7 +47,8 @@
 - payment modal component
     - after clicking on 'send invoice', create a modal that asks for name, credit card number, phone number, and cvv
         - on button click, send the list items to another array for 'past orders'
-        - add a 'save payment information' button that on click will store the name, cc, cvv, and phone number
+        - allows for a review of the items, the total amount, and edits
+        - will include 2 buttons to confirm sending or return to list
         - connect the saved information to Firebase
 
 - past order component

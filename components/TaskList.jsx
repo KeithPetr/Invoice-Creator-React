@@ -41,19 +41,15 @@ export default function TaskList() {
 
   function handleDollarAmountChange(event) {
     const inputValue = event.target.value;
-
-    // Parse the input value as a floating-point number
-    let floatValue = parseFloat(inputValue);
-
-    // Check if floatValue is a valid number
-    if (!isNaN(floatValue)) {
-      // Round to two decimal places
-      const roundedValue = (Math.round(floatValue * 100) / 100);
-
-      // Update the input value with the rounded value
-      setRoundedValue(roundedValue);
+  
+    // Use a regular expression to ensure that the input is a valid number with up to 2 decimal places
+    const validNumber = /^\d+(\.\d{0,2})?$/.test(inputValue);
+  
+    if (validNumber || inputValue === "") { // Allow empty input
+      setRoundedValue(inputValue);
     }
   }
+  
 
   function handleTaskNameChange(event) {
     const inputName = event.target.value;
@@ -71,7 +67,9 @@ export default function TaskList() {
   ));
 
   const taskListAmounts = taskList.map((item) => {
-    return <p key={item.id}>${item.amount}</p>;
+    const formattedNumber = parseFloat(item.amount).toFixed(2)
+
+    return <p key={item.id}>${formattedNumber}</p>;
   });
 
   useEffect(() => {
@@ -120,7 +118,7 @@ export default function TaskList() {
           />
         <input
           className="dollar-amount"
-          type="number"
+          type="text"
           ref={dollarAmountRef}
           onChange={handleDollarAmountChange}
           value={roundedValue}
