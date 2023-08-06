@@ -92,6 +92,8 @@ header {
   width: 25%;
 }
 
+
+
 .task-input,
 .dollar-amount {
   padding: 0.5em;
@@ -113,6 +115,7 @@ header {
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
+  height: 350px;
 }
 
 .item-names,
@@ -136,6 +139,11 @@ header {
   font-size: .5rem;
   letter-spacing: 0.1rem;
   margin-left: .75em;
+  cursor: pointer;
+}
+
+.remove:hover {
+  color: red;
 }
 
 .task-list-names, .task-list-amounts {
@@ -144,6 +152,11 @@ header {
 }
 
 /* ------------------------- TOTAL SECTION ---------------------- */
+
+.total {
+  display: flex;
+  flex-direction: column;
+}
 
 .total-headings {
   display: flex;
@@ -165,4 +178,16 @@ header {
 
 .total-details > div {
   font-weight: 700;
+}
+
+.send-btn {
+    background-color: #3770ed;
+    color: var(--text-color);
+    padding: 0.5em 1em;
+    width: 90%;
+    font-size: 1.2rem;
+    margin: 0.5em auto;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
 }

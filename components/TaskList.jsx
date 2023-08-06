@@ -1,40 +1,86 @@
 /* eslint-disable react/prop-types */
+import { database } from "../src/firebase";
 import { useState, useRef, useEffect } from "react";
 import {
   onValue,
   push,
+  ref,
+  remove,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
-export default function TaskList({ tasksDB }) {
+export default function TaskList() {
   const [taskList, setTaskList] = useState([]);
   const taskInputRef = useRef(null);
   const dollarAmountRef = useRef(null);
   const [total, setTotal] = useState([]);
+  const tasksDB = ref(database, "tasks");
+  const [roundedValue, setRoundedValue] = useState("");
+  const [taskName, setTaskName] = useState("")
 
   // this function creates a task object that contains the task
   // name and the amount. It then adds the object to the taskList
   // array and spreads in previous objects
   function addTask() {
-    const taskName = taskInputRef.current.value;
-    const amountValue = dollarAmountRef.current.value;
-
     const taskObject = {
       task: taskName,
-      amount: amountValue,
+      amount: roundedValue,
     };
 
     push(tasksDB, taskObject);
 
-    taskInputRef.current.value = "";
-    dollarAmountRef.current.value = "";
+    setTaskName("")
+    setRoundedValue("");
   }
+
+  // this function looks through the child objects of the
+  // database for the specific id being brought in as a
+  // parameter and then removes it
+  function removeTask(id) {
+    remove(ref(database, `tasks/${id}`));
+  }
+
+  function handleDollarAmountChange(event) {
+    const inputValue = event.target.value;
+
+    // Parse the input value as a floating-point number
+    let floatValue = parseFloat(inputValue);
+
+    // Check if floatValue is a valid number
+    if (!isNaN(floatValue)) {
+      // Round to two decimal places
+      const roundedValue = (Math.round(floatValue * 100) / 100);
+
+      // Update the input value with the rounded value
+      setRoundedValue(roundedValue);
+    }
+  }
+
+  function handleTaskNameChange(event) {
+    const inputName = event.target.value;
+
+    setTaskName(inputName);
+  }
+
+  const taskListNames = taskList.map((item) => (
+    <div key={item.id} className="task-list-names">
+      <p>{item.task}</p>
+      <p className="remove" onClick={() => removeTask(item.id)}>
+        Remove
+      </p>
+    </div>
+  ));
+
+  const taskListAmounts = taskList.map((item) => {
+    return <p key={item.id}>${item.amount}</p>;
+  });
 
   useEffect(() => {
     // Set up the listener when the component mounts
     const unsubscribe = onValue(tasksDB, (snapshot) => {
       const itemsObject = snapshot.val();
+      console.log(snapshot.val());
 
-      if (itemsObject) {
+      if (snapshot.exists()) {
         const itemsArray = Object.keys(itemsObject).map((key) => {
           return {
             id: key,
@@ -43,31 +89,20 @@ export default function TaskList({ tasksDB }) {
           };
         });
         setTaskList(itemsArray);
+      } else {
+        setTaskList([]);
       }
     });
 
     // Clean up the listener when the component unmounts
     return () => unsubscribe();
-  }, [tasksDB]);
-
-  const taskListNames = taskList.map((item) => (
-    <div key={item.task} className="task-list-names">
-      <p>{item.task}</p>
-      <p className="remove">Remove</p>
-    </div>
-  ));
-
-  const taskListAmounts = taskList.map((item) => {
-    return <p key={item.task}>{item.amount}</p>;
-  });
+  }, []);
 
   useEffect(() => {
     // Calculate the total amount
     const newTotal = taskList.reduce(
-      (acc, item) => acc + parseFloat(item.amount),
-      0
-    );
-    setTotal(newTotal);
+      (acc, item) => acc + parseFloat(item.amount), 0);
+    setTotal(newTotal.toFixed(2));
   }, [taskList]); // Run this effect whenever taskList changes
 
   console.log("taskList", taskList);
@@ -76,8 +111,20 @@ export default function TaskList({ tasksDB }) {
   return (
     <section className="task-list">
       <div className="input-section">
-        <input className="task-input" type="text" ref={taskInputRef} />
-        <input className="dollar-amount" type="number" ref={dollarAmountRef} />
+        <input 
+          className="task-input" 
+          type="text" 
+          ref={taskInputRef}
+          onChange={handleTaskNameChange}
+          value={taskName}
+          />
+        <input
+          className="dollar-amount"
+          type="number"
+          ref={dollarAmountRef}
+          onChange={handleDollarAmountChange}
+          value={roundedValue}
+        />
         <button className="plus-sign" onClick={addTask}></button>
       </div>
       <div className="list-headings">
@@ -88,7 +135,6 @@ export default function TaskList({ tasksDB }) {
         <div className="item-prices">
           <h2>Task Price</h2>
           {taskListAmounts}
-          <div></div>
         </div>
       </div>
       <div className="total">
@@ -97,9 +143,10 @@ export default function TaskList({ tasksDB }) {
           <p>Total Amount</p>
         </div>
         <div className="total-details">
-            <p>We accept cash, credit, or PayPal</p>
-            <div>{total}</div>
+          <p>We accept cash, credit, or PayPal</p>
+          <div>${total}</div>
         </div>
+        <button className="send-btn">Send Invoice</button>
       </div>
     </section>
   );

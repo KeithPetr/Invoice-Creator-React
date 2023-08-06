@@ -36,6 +36,9 @@
     - list items need to have option to be deleted individually
         - add 'remove' button that use filter method to go through list items in an array
 
+    - when list items exceed 5, add scroll bar so the layout does
+    not keep going further down the screen
+
     - create an array that holds the prices of all of the items that are listed
         - use the reduce method to calculate a total amount
         - make sure the total is updated whether an item is added or removed
