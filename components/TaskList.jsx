@@ -54,7 +54,10 @@ export default function TaskList() {
   function handleTaskNameChange(event) {
     const inputName = event.target.value;
 
-    setTaskName(inputName);
+    // Prevent input of numeric characters
+    if (!/\d/.test(inputName)) {
+      setTaskName(inputName);
+    }
   }
 
   const taskListNames = taskList.map((item) => (
@@ -69,7 +72,11 @@ export default function TaskList() {
   const taskListAmounts = taskList.map((item) => {
     const formattedNumber = parseFloat(item.amount).toFixed(2);
 
-    return <p key={item.id} className="task-list-amount">${formattedNumber}</p>;
+    return (
+      <p key={item.id} className="task-list-amount">
+        ${formattedNumber}
+      </p>
+    );
   });
 
   useEffect(() => {
