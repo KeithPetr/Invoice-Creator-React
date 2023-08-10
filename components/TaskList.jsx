@@ -15,7 +15,7 @@ export default function TaskList() {
   const [total, setTotal] = useState([]);
   const tasksDB = ref(database, "tasks");
   const [roundedValue, setRoundedValue] = useState("");
-  const [taskName, setTaskName] = useState("")
+  const [taskName, setTaskName] = useState("");
 
   // this function creates a task object that contains the task
   // name and the amount. It then adds the object to the taskList
@@ -28,7 +28,7 @@ export default function TaskList() {
 
     push(tasksDB, taskObject);
 
-    setTaskName("")
+    setTaskName("");
     setRoundedValue("");
   }
 
@@ -41,15 +41,15 @@ export default function TaskList() {
 
   function handleDollarAmountChange(event) {
     const inputValue = event.target.value;
-  
+
     // Use a regular expression to ensure that the input is a valid number with up to 2 decimal places
     const validNumber = /^\d+(\.\d{0,2})?$/.test(inputValue);
-  
-    if (validNumber || inputValue === "") { // Allow empty input
+
+    if (validNumber || inputValue === "") {
+      // Allow empty input
       setRoundedValue(inputValue);
     }
   }
-  
 
   function handleTaskNameChange(event) {
     const inputName = event.target.value;
@@ -60,16 +60,16 @@ export default function TaskList() {
   const taskListNames = taskList.map((item) => (
     <div key={item.id} className="task-list-names">
       <p>{item.task}</p>
-      <p className="remove" onClick={() => removeTask(item.id)}>
+      <span className="remove" onClick={() => removeTask(item.id)}>
         Remove
-      </p>
+      </span>
     </div>
   ));
 
   const taskListAmounts = taskList.map((item) => {
-    const formattedNumber = parseFloat(item.amount).toFixed(2)
+    const formattedNumber = parseFloat(item.amount).toFixed(2);
 
-    return <p key={item.id}>${formattedNumber}</p>;
+    return <p key={item.id} className="task-list-amount">${formattedNumber}</p>;
   });
 
   useEffect(() => {
@@ -99,7 +99,9 @@ export default function TaskList() {
   useEffect(() => {
     // Calculate the total amount
     const newTotal = taskList.reduce(
-      (acc, item) => acc + parseFloat(item.amount), 0);
+      (acc, item) => acc + parseFloat(item.amount),
+      0
+    );
     setTotal(newTotal.toFixed(2));
   }, [taskList]); // Run this effect whenever taskList changes
 
@@ -109,13 +111,13 @@ export default function TaskList() {
   return (
     <section className="task-list">
       <div className="input-section">
-        <input 
-          className="task-input" 
-          type="text" 
+        <input
+          className="task-input"
+          type="text"
           ref={taskInputRef}
           onChange={handleTaskNameChange}
           value={taskName}
-          />
+        />
         <input
           className="dollar-amount"
           type="text"
@@ -125,14 +127,14 @@ export default function TaskList() {
         />
         <button className="plus-sign" onClick={addTask}></button>
       </div>
-      <div className="list-headings">
-        <div className="item-names">
+      <div className="list-wrapper">
+        <div className="list-headings">
           <h2>Task</h2>
-          {taskListNames}
-        </div>
-        <div className="item-prices">
           <h2>Task Price</h2>
-          {taskListAmounts}
+        </div>
+        <div className="item-wrapper">
+          <div className="item-names">{taskListNames}</div>
+          <div className="item-prices">{taskListAmounts}</div>
         </div>
       </div>
       <div className="total">

@@ -111,28 +111,32 @@ header {
   cursor: pointer;
 }
 
+.list-wrapper {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+}
+
 .list-headings {
   display: flex;
   justify-content: space-between;
-  font-size: 0.8rem;
-  height: 350px;
+  font-size: .6rem;
+  font-weight: 400;
+  padding-right: 4em;
 }
 
-.item-names,
+.item-wrapper {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
 .item-prices {
   display: flex;
   flex-direction: column;
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-.item-names > h2, .item-prices > h2 {
- font-size: 0.8rem;
- font-weight: normal;
-}
-
-.item-prices > p {
-  align-self: flex-end;
+  align-items: flex-end;
 }
 
 .remove {
@@ -146,9 +150,20 @@ header {
   color: red;
 }
 
-.task-list-names, .task-list-amounts {
+.task-list-names {
   display: flex;
-  align-items: center;
+}
+
+.task-list-names > span {
+  margin-top: 1em;
+}
+
+.task-list-names > p, .task-list-amount {
+  margin: 0 0 1em 0;
+}
+
+.task-list-amount{
+  padding-right: 1em;
 }
 
 /* ------------------------- TOTAL SECTION ---------------------- */
