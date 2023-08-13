@@ -51,6 +51,9 @@ export default function TaskList() {
   // database for the specific id being brought in as a
   // parameter and then removes it
   function removeTask(id) {
+    if (confirm) {
+      return
+    }
     remove(ref(database, `tasks/${id}`));
   }
 
@@ -61,7 +64,6 @@ export default function TaskList() {
     const validNumber = /^\d+(\.\d{0,2})?$/.test(inputValue);
 
     if (validNumber || inputValue === "") {
-      // Allow empty input
       setRoundedValue(inputValue);
     }
   }
@@ -133,23 +135,27 @@ export default function TaskList() {
   return (
     <section className="task-list">
       <div className="input-section">
-        <input
-          className="task-input"
-          type="text"
-          ref={taskInputRef}
-          onChange={handleTaskNameChange}
-          value={taskName}
-          placeholder="Enter Task Name"
-        />
-        <input
-          className="dollar-amount"
-          type="text"
-          ref={dollarAmountRef}
-          onChange={handleDollarAmountChange}
-          value={roundedValue}
-          placeholder="Enter Price"
-        />
-        <button className="plus-sign" onClick={addTask}></button>
+        {!confirm && (
+          <>
+            <input
+              className="task-input"
+              type="text"
+              ref={taskInputRef}
+              onChange={handleTaskNameChange}
+              value={taskName}
+              placeholder="Enter Task Name"
+            />
+            <input
+              className="dollar-amount"
+              type="text"
+              ref={dollarAmountRef}
+              onChange={handleDollarAmountChange}
+              value={roundedValue}
+              placeholder="Enter Price"
+            />
+            <button className="plus-sign" onClick={addTask}></button>
+          </>
+        )}
       </div>
       <div className="list-wrapper">
         <div className="list-headings">
