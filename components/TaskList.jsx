@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import Confirm from "./Confirm";
 import { database } from "../src/firebase";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -16,18 +17,32 @@ export default function TaskList() {
   const tasksDB = ref(database, "tasks");
   const [roundedValue, setRoundedValue] = useState("");
   const [taskName, setTaskName] = useState("");
+  const [confirm, setConfirm] = useState(false);
 
   // this function creates a task object that contains the task
   // name and the amount. It then adds the object to the taskList
   // array and spreads in previous objects
   function addTask() {
+    const taskNameValue = taskName.trim();
+    const roundedValueValue = roundedValue.trim();
+
+    if (!taskNameValue || !roundedValueValue) {
+      alert("Both fields must have a value.");
+      return;
+    }
+
     const taskObject = {
       task: taskName,
       amount: roundedValue,
     };
 
-    push(tasksDB, taskObject);
+    const taskExists = taskList.some((item) => item.task == taskName);
 
+    if (taskExists) {
+      alert("Task already exists!");
+    } else {
+      push(tasksDB, taskObject);
+    }
     setTaskName("");
     setRoundedValue("");
   }
@@ -105,10 +120,10 @@ export default function TaskList() {
 
   useEffect(() => {
     // Calculate the total amount
-    const newTotal = taskList.reduce(
-      (acc, item) => acc + parseFloat(item.amount),
-      0
-    );
+    const newTotal = taskList.reduce((acc, item) => {
+      const amount = parseFloat(item.amount);
+      return isNaN(amount) ? acc + 0 : acc + amount;
+    }, 0);
     setTotal(newTotal.toFixed(2));
   }, [taskList]); // Run this effect whenever taskList changes
 
@@ -124,6 +139,7 @@ export default function TaskList() {
           ref={taskInputRef}
           onChange={handleTaskNameChange}
           value={taskName}
+          placeholder="Enter Task Name"
         />
         <input
           className="dollar-amount"
@@ -131,6 +147,7 @@ export default function TaskList() {
           ref={dollarAmountRef}
           onChange={handleDollarAmountChange}
           value={roundedValue}
+          placeholder="Enter Price"
         />
         <button className="plus-sign" onClick={addTask}></button>
       </div>
@@ -153,7 +170,13 @@ export default function TaskList() {
           <p>We accept cash, credit, or PayPal</p>
           <div>${total}</div>
         </div>
-        <button className="send-btn">Send Invoice</button>
+        {confirm ? (
+          <Confirm setConfirm={setConfirm} />
+        ) : (
+          <button className="send-btn" onClick={() => setConfirm(true)}>
+            Send Invoice
+          </button>
+        )}
       </div>
     </section>
   );
