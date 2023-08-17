@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import Confirm from "./Confirm";
+import History from "./History";
 import { database } from "../src/firebase";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -9,15 +10,14 @@ import {
   remove,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
-export default function TaskList() {
-  const [taskList, setTaskList] = useState([]);
+export default function TaskList({history, setHistory, confirm, setConfirm,}) {
+  const tasksDB = ref(database, "tasks");
   const taskInputRef = useRef(null);
   const dollarAmountRef = useRef(null);
+  const [taskList, setTaskList] = useState([]);
   const [total, setTotal] = useState([]);
-  const tasksDB = ref(database, "tasks");
   const [roundedValue, setRoundedValue] = useState("");
   const [taskName, setTaskName] = useState("");
-  const [confirm, setConfirm] = useState(false);
 
   // this function creates a task object that contains the task
   // name and the amount. It then adds the object to the taskList
@@ -45,6 +45,7 @@ export default function TaskList() {
     }
     setTaskName("");
     setRoundedValue("");
+    taskInputRef.current.focus();
   }
 
   // this function looks through the child objects of the
@@ -52,7 +53,7 @@ export default function TaskList() {
   // parameter and then removes it
   function removeTask(id) {
     if (confirm) {
-      return
+      return;
     }
     remove(ref(database, `tasks/${id}`));
   }
@@ -132,7 +133,9 @@ export default function TaskList() {
   console.log("taskList", taskList);
   console.log("total:", total);
 
-  return (
+  return history ? (
+    <History />
+  ) : (
     <section className="task-list">
       <div className="input-section">
         {!confirm && (
@@ -143,7 +146,7 @@ export default function TaskList() {
               ref={taskInputRef}
               onChange={handleTaskNameChange}
               value={taskName}
-              placeholder="Enter Task Name"
+              placeholder="Task "
             />
             <input
               className="dollar-amount"
@@ -151,7 +154,7 @@ export default function TaskList() {
               ref={dollarAmountRef}
               onChange={handleDollarAmountChange}
               value={roundedValue}
-              placeholder="Enter Price"
+              placeholder="Price"
             />
             <button className="plus-sign" onClick={addTask}></button>
           </>
@@ -177,7 +180,12 @@ export default function TaskList() {
           <div>${total}</div>
         </div>
         {confirm ? (
-          <Confirm setConfirm={setConfirm} />
+          <Confirm
+            setConfirm={setConfirm}
+            setHistory={setHistory}
+            taskList={taskList}
+            total={total}
+          />
         ) : (
           <button className="send-btn" onClick={() => setConfirm(true)}>
             Send Invoice
