@@ -36,7 +36,7 @@ export default function TaskList({history, setHistory, confirm, setConfirm,}) {
       amount: roundedValue,
     };
 
-    const taskExists = taskList.some((item) => item.task == taskName);
+    const taskExists = taskList.some((item) => item.task.toLowerCase() == taskName.toLowerCase());
 
     if (taskExists) {
       alert("Task already exists!");
