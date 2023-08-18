@@ -4,6 +4,7 @@ import { database } from "../src/firebase";
 import {
   onValue,
   ref,
+  remove,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 export default function History() {
@@ -36,16 +37,30 @@ export default function History() {
     return () => unsubscribe();
   }, []);
 
+  function removeInvoice(id) {
+    remove(ref(database, `history/${id}`));
+  }
+
   return (
     <div className="history-section">
       <h1>Invoice History</h1>
       {historyData.length === 0 ? (
-        <h3>No History to Display</h3>
+        <h3>- No History to Display -</h3>
       ) : (
-        historyData.map((data) => {
+        historyData.map((data, index) => {
           console.log("HistoryData:", data);
           return (
-            <>
+            <div key={index} className="invoice">
+              <h3>
+                Invoice {index + 1}
+                <span className="remove" onClick={() => removeInvoice(data.id)}>
+                  Remove
+                </span>
+              </h3>
+              <div className="history-titles">
+                <h3 className="history-titles-task">Task</h3>
+                <h3 className="history-titles-amount">Amount</h3>
+              </div>
               <div key={data.id} className="history-list">
                 <div className="history-item-name">
                   {data.tasks.map((task, index) => (
@@ -60,7 +75,7 @@ export default function History() {
               </div>
               <h2>Total: ${data.total}</h2>
               <h3>Date: {data.date}</h3>
-            </>
+            </div>
           );
         })
       )}
