@@ -78,6 +78,10 @@ export default function TaskList({history, setHistory, confirm, setConfirm,}) {
     }
   }
 
+  function sendInvoice() {
+
+  }
+
   const taskListNames = taskList.map((item) => (
     <div key={item.id} className="task-list-names">
       <p>{item.task}</p>
@@ -187,7 +191,7 @@ export default function TaskList({history, setHistory, confirm, setConfirm,}) {
             total={total}
           />
         ) : (
-          <button className="send-btn" onClick={() => setConfirm(true)}>
+          <button className="send-btn" onClick={() => setConfirm(true)} disabled={taskList.length === 0}>
             Send Invoice
           </button>
         )}
