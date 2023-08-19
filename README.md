@@ -27,7 +27,7 @@ I have added many new stretch goals to the project of my own, including using Re
 <img src="https://github.com/KeithPetr/Invoice-Creator-React/assets/91621041/c05bf795-c409-462d-8347-b1a799ea67e1" height="450" width="375" />
 
 ## Links
- [Live Demo](https://tindog-react-site.netlify.app/](https://invoice-creator-react.netlify.app/)
+ [Live Demo](https://invoice-creator-react.netlify.app/)
 
 ## Project Requirements
 There were 6 main requirements for this project. The first was I needed to create an array to hold all of the tasks that were entered onto the list. 
