@@ -100,22 +100,6 @@ header {
   border: 1px solid #1f2937;
 }
 
-.plus-sign {
-  height: 30px;
-  padding: 1em;
-  border: none;
-  background: url(images/plus-sign.svg) center no-repeat;
-  background-size: 60%;
-  max-width: 30px;
-  cursor: pointer;
-  background-color: var(--primary-color);
-  border-radius: 50%;
-}
-
-.plus-sign:hover {
-  border: solid #eeeeee 1px;
-}
-
 .list-wrapper {
   display: flex;
   flex-direction: column;

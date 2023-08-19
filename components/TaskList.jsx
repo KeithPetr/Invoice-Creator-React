@@ -3,7 +3,6 @@ import Confirm from "./Confirm";
 import History from "./History";
 import { database } from "../src/firebase";
 import { useState, useRef, useEffect } from "react";
-import '../src/index.css';
 import {
   onValue,
   push,
@@ -11,7 +10,7 @@ import {
   remove,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
-export default function TaskList({history, setHistory, confirm, setConfirm,}) {
+export default function TaskList({ history, setHistory, confirm, setConfirm }) {
   const tasksDB = ref(database, "tasks");
   const taskInputRef = useRef(null);
   const dollarAmountRef = useRef(null);
@@ -19,6 +18,7 @@ export default function TaskList({history, setHistory, confirm, setConfirm,}) {
   const [total, setTotal] = useState([]);
   const [roundedValue, setRoundedValue] = useState("");
   const [taskName, setTaskName] = useState("");
+  const [isPlusSignHovered, setIsPlusSignHovered] = useState(false);
 
   // this function creates a task object that contains the task
   // name and the amount. It then adds the object to the taskList
@@ -37,7 +37,9 @@ export default function TaskList({history, setHistory, confirm, setConfirm,}) {
       amount: roundedValue,
     };
 
-    const taskExists = taskList.some((item) => item.task.toLowerCase() == taskName.toLowerCase());
+    const taskExists = taskList.some(
+      (item) => item.task.toLowerCase() == taskName.toLowerCase()
+    );
 
     if (taskExists) {
       alert("Task already exists!");
@@ -79,10 +81,6 @@ export default function TaskList({history, setHistory, confirm, setConfirm,}) {
     }
   }
 
-  function sendInvoice() {
-
-  }
-
   const taskListNames = taskList.map((item) => (
     <div key={item.id} className="task-list-names">
       <p>{item.task}</p>
@@ -101,6 +99,19 @@ export default function TaskList({history, setHistory, confirm, setConfirm,}) {
       </p>
     );
   });
+
+
+  const plusSignStyle = {
+    height: "30px",
+    padding: "1em",
+    backgroundSize: "60%",
+    maxWidth: "30px",
+    cursor: "pointer",
+    backgroundColor: "var(--primary-color)",
+    borderRadius: "50%",
+    background: "url(images/plus-sign.svg) center no-repeat",
+    border: isPlusSignHovered ? "solid #eeeeee 1px" : "none",
+  };
 
   useEffect(() => {
     // Set up the listener when the component mounts
@@ -161,7 +172,13 @@ export default function TaskList({history, setHistory, confirm, setConfirm,}) {
               value={roundedValue}
               placeholder="Price"
             />
-            <button className="plus-sign" onClick={addTask}></button>
+            <button
+              className="plus-sign"
+              onClick={addTask}
+              style={plusSignStyle}
+              onMouseEnter={() => setIsPlusSignHovered(true)}
+              onMouseLeave={() => setIsPlusSignHovered(false)}
+            ></button>
           </>
         )}
       </div>
@@ -192,7 +209,11 @@ export default function TaskList({history, setHistory, confirm, setConfirm,}) {
             total={total}
           />
         ) : (
-          <button className="send-btn" onClick={() => setConfirm(true)} disabled={taskList.length === 0}>
+          <button
+            className="send-btn"
+            onClick={() => setConfirm(true)}
+            disabled={taskList.length === 0}
+          >
             Send Invoice
           </button>
         )}
