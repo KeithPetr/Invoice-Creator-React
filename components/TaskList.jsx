@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import Confirm from "./Confirm";
 import History from "./History";
+import PlusSign from "../images/plus-sign.svg"
 import { database } from "../src/firebase";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -109,7 +110,7 @@ export default function TaskList({ history, setHistory, confirm, setConfirm }) {
     cursor: "pointer",
     backgroundColor: "var(--primary-color)",
     borderRadius: "50%",
-    background: "url(images/plus-sign.svg) center no-repeat",
+    background: `url(${PlusSign}) center no-repeat`,
     border: isPlusSignHovered ? "solid #eeeeee 1px" : "none",
   };
 
