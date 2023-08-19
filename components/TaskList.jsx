@@ -3,6 +3,7 @@ import Confirm from "./Confirm";
 import History from "./History";
 import { database } from "../src/firebase";
 import { useState, useRef, useEffect } from "react";
+import '../src/index.css';
 import {
   onValue,
   push,
