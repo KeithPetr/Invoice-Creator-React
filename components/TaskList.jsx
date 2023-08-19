@@ -101,16 +101,15 @@ export default function TaskList({ history, setHistory, confirm, setConfirm }) {
     );
   });
 
-
   const plusSignStyle = {
     height: "30px",
     padding: "1em",
+    background: `url(${PlusSign}) center no-repeat`,
     backgroundSize: "60%",
     maxWidth: "30px",
     cursor: "pointer",
     backgroundColor: "var(--primary-color)",
     borderRadius: "50%",
-    background: `url(${PlusSign}) center no-repeat`,
     border: isPlusSignHovered ? "solid #eeeeee 1px" : "none",
   };
 
