@@ -38,7 +38,9 @@ header {
   margin: 0 0 0.5em 0;
 }
 
-button {
+.dark-mode-btn,
+.create-btn,
+.view-history-btn {
   background: #3d94f6;
   border-radius: 20px;
   color: #ffffff;
@@ -53,7 +55,9 @@ button {
   text-align: center;
 }
 
-button:hover {
+.dark-mode-btn:hover,
+.create-btn:hover,
+.view-history-btn:hover {
   border: solid #337fed 1px;
   background: #1e62d0;
 }
@@ -105,6 +109,11 @@ button:hover {
   max-width: 30px;
   cursor: pointer;
   background-color: var(--primary-color);
+  border-radius: 50%;
+}
+
+.plus-sign:hover {
+  border: solid #eeeeee 1px;
 }
 
 .list-wrapper {
